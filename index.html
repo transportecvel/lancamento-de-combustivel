@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Combustível - Movistar Logística</title>
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Cenário animado de fundo premium -->
+<div class="background-landscape">
+    <div class="sky-clouds"></div>
+    <div class="scenery-city"></div>
+    <div class="gas-station"></div>
+    <div class="road"></div>
+    <!-- Comboio de Caminhões Destro -->
+    <div class="anim-truck truck-1"></div>
+    <div class="anim-truck truck-2"></div>
+    <div class="anim-truck truck-3"></div>
+</div>
+
+<div class="top-buttons-container">
+    <button class="btn-top-premium btn-analytics" onclick="abrirCentralAnalytics()">
+        <span>📊</span> <span>Análises de Consumo</span>
+    </button>
+    <button class="btn-top-premium" onclick="abrirModalHistorico()">
+        <span>📋</span> <span>Histórico de Lançamentos</span>
+    </button>
+</div>
+
+<!-- MODAL DO HISTÓRICO COMPACTO FULLSCREEN -->
+<div class="modal-fullscreen" id="modalHistorico" onclick="fecharModalHistoricoOutside(event)">
+    <div class="modal-fullscreen-content">
+        <div class="modal-fullscreen-header">
+            <h3>📋 Histórico Consolidado de Abastecimento</h3>
+            <div style="font-size: 12px; font-weight: bold; color: var(--btn-orange); margin-left: auto; margin-right: 20px;">
+                <span id="totalRegistros">0 registros</span> <span id="contadorSelecionados" style="color: #10b981; margin-left: 6px;">(0 sel.)</span>
+            </div>
+            <button class="modal-fullscreen-close" onclick="fecharModalHistorico()">✖</button>
+        </div>
+        <div class="filter-bar">
+            <div class="filter-group"><label>Data</label><br><input type="text" id="filtroData" placeholder="dd/mm" oninput="filtrarHistorico()"></div>
+            <div class="filter-group"><label>Frota</label><br><input type="text" id="filtroFrota" placeholder="Ex: 2470" oninput="filtrarHistorico()"></div>
+            <div class="filter-group"><label>Motorista</label><br><input type="text" id="filtroMoto" placeholder="Filtrar nome..." oninput="filtrarHistorico()"></div>
+            <div class="filter-group"><label>Rota</label><br><input type="text" id="filtroRota" placeholder="Filtrar rota..." oninput="filtrarHistorico()"></div>
+        </div>
+        <div class="table-container-modal">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40px; text-align: center;"><input type="checkbox" id="checkMarcarTodos" onclick="marcarDesmarcarTodos(this)"></th>
+                        <th style="width: 80px;">Data</th>
+                        <th style="width: 70px;">Frota</th>
+                        <th style="width: 70px;">Diesel</th>
+                        <th style="width: 130px;">Motorista</th>
+                        <th style="width: 140px;">Rota</th>
+                        <th style="width: 100px;">KM Rodado</th>
+                        <th style="width: 95px;">L. Interno</th>
+                        <th style="width: 95px;">L. Externo</th>
+                        <th style="width: 90px;">Val. Litro</th>
+                        <th style="width: 100px;">Val. Total</th>
+                        <th style="width: 80px;">Média</th>
+                        <th>Relatório</th>
+                    </tr>
+                </thead>
+                <tbody id="dadosHistorico">
+                    <tr><td colspan="13" style="text-align: center; color: #888; padding: 20px;">Carregando dados...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-container" id="boxPaginacao" style="padding-bottom: 15px; background: #f8fafc;"></div>
+    </div>
+</div>
+
+<!-- MODAL DA CENTRAL DE DASHBOARD (ANALYTICS) -->
+<div class="analytics-modal" id="modalAnalytics" onclick="fecharCentralAnalyticsOutside(event)">
+    <div class="analytics-content">
+        <div class="analytics-header">
+            <h3>📈 Central Inteligente de Consumo e Desempenho</h3>
+            <button class="analytics-close" onclick="fecharCentralAnalytics()">✖</button>
+        </div>
+        <div class="analytics-toolbar">
+            <span style="font-size: 11px; font-weight: 800; color: #475569; margin-right: 5px;">FILTRAR PERÍODO:</span>
+            <button class="btn-time-filter active" id="filterAll" onclick="filtrarTempoAnalytics('TODOS')">Geral</button>
+            <button class="btn-time-filter" id="filterMonth" onclick="filtrarTempoAnalytics('MENSAL')">Mensal (30 dias)</button>
+            <button class="btn-time-filter" id="filterWeek" onclick="filtrarTempoAnalytics('SEMANAL')">Semanal (7 dias)</button>
+            <button class="btn-time-filter" id="filterDay" onclick="filtrarTempoAnalytics('DIARIO')">Hoje</button>
+        </div>
+        <div class="analytics-body">
+            <div class="analytics-card">
+                <h4>🚛 Litros Internos Abastecidos por Caminhão</h4>
+                <div id="chartCaminhaoLitros" style="overflow-y: auto; max-height: 200px;"></div>
+            </div>
+            <div class="analytics-card">
+                <h4>🥇 Eficiência Média por Motorista (KM/L)</h4>
+                <div id="chartMotoristaMedia" style="overflow-y: auto; max-height: 200px;"></div>
+            </div>
+            <div class="analytics-card">
+                <h4>⛽ Consumo e Distribuição por Tipo de Diesel</h4>
+                <div id="chartDieselConsumo" style="overflow-y: auto; max-height: 200px;"></div>
+            </div>
+            <div class="analytics-card">
+                <h4>🗺️ Quilometragem Total por Rota Destino</h4>
+                <div id="chartRotaConsumo" style="overflow-y: auto; max-height: 200px;"></div>
+            </div>
+            <div class="analytics-card" style="grid-column: span 2;">
+                <h4>📊 Indicadores de Custo e Performance Operacional</h4>
+                <div id="statsGeraisCombustivel" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popup-acoes-menu" id="popupMenuAcoes">
+    <button type="button" class="popup-acoes-item item-alterar" id="popupBtnAlterar">✏️ Alterar Lançamento</button>
+    <button type="button" class="popup-acoes-item item-excluir" id="popupBtnExcluir">🗑️ Excluir Lançamento</button>
+</div>
+
+<div class="dashboard-layout">
+    <!-- FORMULÁRIO PRINCIPAL -->
+    <div class="container">
+        <div class="header">
+            <div class="logo-container"><img src="./img/LOGO MOVISTAR.png" alt="Movistar Logística"></div>
+            <h2>Controle de Combustível Interno</h2>
+        </div>
+        
+        <form id="combustivelForm">
+            <div class="form-section">
+                <div class="section-title">Dados do Plantão</div>
+                <div class="form-row-three">
+                    <div class="form-group">
+                        <label for="txtData">Data do Lançamento</label>
+                        <input type="date" id="txtData" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectFrentista">Frentista</label>
+                        <select id="selectFrentista" required>
+                            <option value="PEDRO">PEDRO</option>
+                            <option value="MARIO">MARIO</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectDiesel">Diesel</label>
+                        <select id="selectDiesel" required>
+                            <option value="S-10">S-10</option>
+                            <option value="S-500">S-500</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">Veículo / Equipamento</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="selectFrota">Frota</label>
+                        <div class="search-input-container">
+                            <select id="selectFrota" required>
+                                <option value="" disabled selected>Selecione a Frota...</option>
+                            </select>
+                            <button type="button" class="btn-add-shortcut" onclick="adicionarFrotaManual()">+</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Modelo do Veículo</label>
+                        <input type="text" id="txtTipoVeiculo" placeholder="Identificando..." disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" id="secaoLogistica">
+                <div class="section-title">Logística da Viagem</div>
+                <div class="form-row">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="selectMotorista">Nome do Motorista</label>
+                        <div class="search-input-container">
+                            <select id="selectMotorista">
+                                <option value="" disabled selected>Selecione o Motorista...</option>
+                            </select>
+                            <button type="button" class="btn-add-shortcut" onclick="adicionarMotoristaManual()">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" id="rowRotaCampos">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="selectRota">Nome / Destino Rota</label>
+                        <div class="search-input-container">
+                            <select id="selectRota">
+                                <option value="" disabled selected>Selecione a Rota...</option>
+                            </select>
+                            <button type="button" class="btn-add-shortcut" onclick="adicionarRotaManual()">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">Medição e Abastecimento</div>
+                <div class="form-row-three">
+                    <div class="form-group" id="grpKm">
+                        <label for="numKm">KM Rodado</label>
+                        <input type="number" id="numKm" placeholder="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label sku="numLitroInter">Litros Interno</label>
+                        <input type="number" id="numLitroInter" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <div class="form-group" id="grpLitroExter">
+                        <label for="numLitroExter">Litros Externo</label>
+                        <input type="number" id="numLitroExter" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                </div>
+                <div class="form-row-three">
+                    <div class="form-group" id="grpRelatorio">
+                        <label for="txtRelatorio">Nº Relatório</label>
+                        <input type="text" id="txtRelatorio" placeholder="Ex: 74863">
+                        <button type="button" class="btn-excecao-relatorio" id="btnExcecao" onclick="alternarExcecaoRelatorio()">⚠️ Sem Relatório</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="numValorLitro">R$ Valor Litro</label>
+                        <input type="number" id="numValorLitro" placeholder="R$ 0.00" min="0" step="0.001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>R$ Valor Total</label>
+                        <input type="text" id="txtValorTotal" placeholder="R$ 0,00" disabled style="font-weight: 800;">
+                    </div>
+                </div>
+                <div class="form-row" id="grpMedia">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Média Calculada (KM / L Total)</label>
+                        <input type="text" id="txtMedia" placeholder="Automático" disabled style="background:#ecfdf5; font-weight:800; color:#047857; text-align:center;">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="btnSalvar"><span>Salvar Abastecimento</span></button>
+        </form>
+    </div>
+</div>
+
+<!-- Link para o arquivo JavaScript externo -->
+<script src="script.js"></script>
+</body>
+</html>

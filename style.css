@@ -1,0 +1,354 @@
+/* Paleta de Cores baseada na Logo Movistar */
+:root {
+    --movistar-blue: #0000FF;
+    --movistar-hover: #0000cc;
+    --btn-orange: #f59e0b;
+    --text-dark: #0f172a;
+    --text-muted: #475569;
+    --card-bg: rgba(255, 255, 255, 0.94);
+    --border-color: #cbd5e1;
+    --focus-blue: #2563eb;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+body { 
+    background: linear-gradient(to bottom, #cbd5e1 0%, #94a3b8 100%);
+    color: var(--text-dark); 
+    padding: 10px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    overflow: hidden; 
+    position: relative;
+}
+
+/* --- CENÁRIO ANIMADO DE FUNDO ULTRA DETALHADO --- */
+.background-landscape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 220px;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    border-top: 4px solid #94a3b8;
+    background: linear-gradient(to top, #475569 20%, #64748b 100%);
+}
+
+/* Nuvens no Céu */
+.sky-clouds {
+    position: absolute;
+    top: 15px;
+    width: 200%;
+    height: 40px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 40' fill='%23ffffff' opacity='0.25'><path d='M20,30 Q30,20 40,30 Q50,20 60,30 Q70,25 80,35 L10,35 Z M250,25 Q265,10 280,25 Q295,15 310,25 L240,25 Z M600,32 Q610,22 620,32 Q630,22 640,32 L590,32 Z'/></svg>");
+    background-repeat: repeat-x;
+    background-size: 800px 40px;
+    animation: cityScroll 120s linear infinite;
+}
+
+.scenery-city {
+    position: absolute;
+    bottom: 45px;
+    width: 250%;
+    height: 110px;
+    background-image: 
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 110' fill='%23334155'><rect x='50' y='40' width='35' height='70'/><polygon points='45,40 67,15 90,40'/><rect x='120' y='20' width='45' height='90'/><rect x='200' y='50' width='40' height='60'/><polygon points='195,50 220,25 245,50'/><rect x='280' y='10' width='50' height='100'/><rect x='380' y='40' width='35' height='70'/><polygon points='375,40 397,15 420,40'/><rect x='470' y='30' width='45' height='80'/><rect x='560' y='50' width='40' height='60'/><polygon points='555,50 577,25 600,50'/><rect x='640' y='15' width='55' height='95'/><rect x='740' y='40' width='35' height='70'/></svg>");
+    background-repeat: repeat-x;
+    background-size: 800px 110px;
+    opacity: 0.25;
+    animation: cityScroll 75s linear infinite;
+}
+
+.gas-station {
+    position: absolute;
+    bottom: 45px;
+    right: 120px;
+    width: 110px;
+    height: 75px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 75'><rect x='5' y='5' width='100' height='12' fill='%230000FF'/><rect x='5' y='17' width='100' height='3' fill='%23ffffff'/><rect x='12' y='20' width='8' height='55' fill='%2394a3b8'/><rect x='90' y='20' width='8' height='55' fill='%2394a3b8'/><rect x='42' y='35' width='26' height='40' fill='%23f59e0b' rx='2'/><circle cx='55' cy='50' r='7' fill='white'/><path d='M52,50 L58,50 M55,47 L55,53' stroke='%23f59e0b' stroke-width='2'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.9;
+    z-index: 2;
+}
+
+.road {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: #1e293b;
+    border-top: 6px solid #475569;
+    z-index: 3;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
+}
+.road::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, #fef08a, #fef08a 25px, transparent 25px, transparent 50px);
+    transform: translateY(-50%);
+}
+
+/* --- NOVO CAMINHÃO PREMIUM SUPER DETALHADO (CONVOIO) --- */
+.anim-truck {
+    position: absolute;
+    z-index: 4;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Caminhão 1 - Destro Original (Truck - 3 Eixos / Baú Longo) */
+.truck-1 {
+    width: 145px;
+    height: 50px;
+    bottom: 12px;
+    left: -200px;
+    animation: truckDrive 15s linear infinite;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 60'><defs><linearGradient id='greenCab' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%2316a34a'/><stop offset='100%' stop-color='%2314532d'/></linearGradient><linearGradient id='chrome' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%2394a3b8'/><stop offset='50%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23475569'/></linearGradient></defs><rect x='5' y='12' width='115' height='32' rx='2' fill='url(%23greenCab)'/><rect x='8' y='15' width='109' height='26' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-dasharray='4 2' opacity='0.3'/><text x='25' y='33' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='15' letter-spacing='2' opacity='0.95'>DESTRO</text><rect x='10' y='44' width='110' height='4' fill='%23ef4444' opacity='0.8'/><rect x='120' y='8' width='35' height='36' rx='5' fill='url(%23greenCab)'/><path d='M138,12 L165,18 L170,30 L170,44 L120,44 Z' fill='url(%23greenCab)'/><rect x='142' y='14' width='22' height='12' rx='2' fill='%231e293b'/><rect x='145' y='16' width='17' height='9' rx='1' fill='%23e2e8f0' opacity='0.7'/><circle cx='30' cy='48' r='9' fill='%230f172a'/><circle cx='30' cy='48' r='3' fill='url(%23chrome)'/><circle cx='52' cy='48' r='9' fill='%230f172a'/><circle cx='52' cy='48' r='3' fill='url(%23chrome)'/><circle cx='135' cy='48' r='9' fill='%230f172a'/><circle cx='135' cy='48' r='3' fill='url(%23chrome)'/><circle cx='156' cy='48' r='9' fill='%230f172a'/><circle cx='156' cy='48' r='3' fill='url(%23chrome)'/></svg>");
+}
+
+/* Caminhão 2 - Laranja Variável (Toco - 2 Eixos / Baú Mais Curto / Chassis Reduzido) */
+.truck-2 {
+    width: 145px;
+    height: 50px;
+    bottom: 22px;
+    left: -200px;
+    animation: truckDrive 21s linear infinite;
+    animation-delay: 4s;
+    filter: hue-rotate(45deg); /* Altera a cor do Baú dinamicamente */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 60'><defs><linearGradient id='greenCab' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%2316a34a'/><stop offset='100%' stop-color='%2314532d'/></linearGradient><linearGradient id='chrome' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%2394a3b8'/><stop offset='50%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23475569'/></defs><rect x='5' y='12' width='85' height='32' rx='2' fill='url(%23greenCab)'/><rect x='8' y='15' width='79' height='26' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-dasharray='4 2' opacity='0.3'/><text x='12' y='33' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='14' letter-spacing='1'>DESTRO</text><rect x='10' y='44' width='80' height='4' fill='%23ef4444' opacity='0.8'/><rect x='90' y='8' width='35' height='36' rx='5' fill='url(%23greenCab)'/><path d='M108,12 L135,18 L140,30 L140,44 L90,44 Z' fill='url(%23greenCab)'/><rect x='112' y='14' width='22' height='12' rx='2' fill='%231e293b'/><rect x='115' y='16' width='17' height='9' rx='1' fill='%23e2e8f0' opacity='0.7'/><circle cx='30' cy='48' r='9' fill='%230f172a'/><circle cx='30' cy='48' r='3' fill='url(%23chrome)'/><circle cx='115' cy='48' r='9' fill='%230f172a'/><circle cx='115' cy='48' r='3' fill='url(%23chrome)'/></svg>");
+}
+
+/* Caminhão 3 - Ultrapassagem Rápida (Truck - 3 Eixos) */
+.truck-3 {
+    width: 145px;
+    height: 50px;
+    bottom: 22px;
+    left: -200px;
+    animation: truckDrive 12s linear infinite;
+    animation-delay: 5s;
+    filter: hue-rotate(45deg); /* Altera a cor do Baú dinamicamente */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 60'><defs><linearGradient id='greenCab' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%2316a34a'/><stop offset='100%' stop-color='%2314532d'/></linearGradient><linearGradient id='chrome' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%2394a3b8'/><stop offset='50%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23475569'/></defs><rect x='5' y='12' width='85' height='32' rx='2' fill='url(%23greenCab)'/><rect x='8' y='15' width='79' height='26' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-dasharray='4 2' opacity='0.3'/><text x='12' y='33' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='14' letter-spacing='1'>DESTRO</text><rect x='10' y='44' width='80' height='4' fill='%23ef4444' opacity='0.8'/><rect x='90' y='8' width='35' height='36' rx='5' fill='url(%23greenCab)'/><path d='M108,12 L135,18 L140,30 L140,44 L90,44 Z' fill='url(%23greenCab)'/><rect x='112' y='14' width='22' height='12' rx='2' fill='%231e293b'/><rect x='115' y='16' width='17' height='9' rx='1' fill='%23e2e8f0' opacity='0.7'/><circle cx='30' cy='48' r='9' fill='%230f172a'/><circle cx='30' cy='48' r='3' fill='url(%23chrome)'/><circle cx='115' cy='48' r='9' fill='%230f172a'/><circle cx='115' cy='48' r='3' fill='url(%23chrome)'/></svg>");
+}
+
+@keyframes cityScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-400px); }
+}
+
+@keyframes truckDrive {
+    0% { left: -200px; }
+    100% { left: 100%; }
+}
+
+/* --- BOTÕES FLUTUANTES SUPERIORES --- */
+.top-buttons-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.btn-top-premium {
+    background: linear-gradient(135deg, var(--movistar-blue) 0%, #0000b3 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 18px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-top-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 255, 0.35);
+}
+
+.btn-top-premium.btn-analytics {
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+}
+.btn-top-premium.btn-analytics:hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+
+/* --- LAYOUT DO FORMULÁRIO CENTRALIZADO --- */
+.dashboard-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 20px);
+    z-index: 10;
+}
+
+.container { 
+    background: var(--card-bg); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    width: 540px; 
+    max-width: 100%;
+    padding: 12px 18px; 
+    border-radius: 12px; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
+    border-top: 5px solid var(--btn-orange);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    max-height: 98vh;
+    overflow-y: auto;
+}
+
+.header { 
+    text-align: center; 
+    margin-bottom: 8px; 
+    border-bottom: 2px solid rgba(229, 231, 235, 0.6); 
+    padding-bottom: 6px; 
+}
+
+.logo-container { max-width: 130px; margin: 0 auto; }
+.logo-container img { width: 100%; height: auto; display: block; }
+.header h2 { color: var(--text-dark); font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; margin-top: 4px; }
+
+.form-section { background: rgba(248, 250, 252, 0.85); border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; }
+.section-title { font-size: 10px; font-weight: 800; color: var(--btn-orange); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px; }
+.section-title::after { content: ""; flex: 1; height: 1.2px; background: rgba(226, 232, 240, 0.9); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.form-row-three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.form-group { margin-bottom: 4px; }
+
+label { font-size: 10px; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+input, select { 
+    width: 100%; 
+    padding: 7px 10px; 
+    border: 1.5px solid var(--border-color); 
+    border-radius: 6px; 
+    font-size: 12px; 
+    font-weight: 700;
+    background-color: #ffffff; 
+    color: var(--text-dark); 
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23475569' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    padding-right: 28px;
+}
+
+input:focus, select:focus {
+    border-color: var(--focus-blue);
+    box-shadow: 0 0 0 2.5px rgba(37, 99, 235, 0.12);
+}
+
+input:disabled { background-color: #f1f5f9; color: #64748b; font-weight: 800; cursor: not-allowed; border-color: #e2e8f0; }
+
+.search-input-container { display: flex; align-items: center; position: relative; }
+.btn-add-shortcut {
+    background-color: #f1f5f9; color: #0f172a; border: 1.5px solid var(--border-color); border-left: none;
+    padding: 7px 11px; font-size: 13px; font-weight: 800; cursor: pointer; border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px; position: absolute; right: 0; height: 100%;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+
+.btn-excecao-relatorio {
+    background-color: #f1f5f9; color: #475569; border: 1.5px solid var(--border-color); padding: 6px 8px;
+    font-size: 10px; font-weight: 800; cursor: pointer; border-radius: 6px; margin-top: 4px; width: 100%;
+    text-transform: uppercase; transition: all 0.2s;
+}
+.btn-excecao-relatorio.ativo { background-color: var(--btn-orange); color: white; border-color: var(--btn-orange); }
+
+button[type="submit"] { background-color: var(--btn-orange); color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-size: 13px; font-weight: 800; text-transform: uppercase; margin-top: 6px; box-shadow: 0 3px 8px rgba(245, 158, 11, 0.15); transition: all 0.2s; }
+
+/* --- MODAL DA CENTRAL DE HISTÓRICO COMPACTO FULLSCREEN --- */
+.modal-fullscreen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
+    z-index: 500; display: none; justify-content: center; align-items: center;
+    padding: 20px; animation: popupFadeIn 0.2s ease-out;
+}
+.modal-fullscreen-content {
+    background: #ffffff; border-radius: 16px; width: 1300px; max-width: 95vw;
+    height: 90vh; display: flex; flex-direction: column; border-top: 6px solid var(--movistar-blue);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden;
+}
+.modal-fullscreen-header {
+    padding: 15px 24px; border-bottom: 1px solid #e2e8f0; background: #f8fafc;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.modal-fullscreen-header h3 { font-size: 16px; font-weight: 800; text-transform: uppercase; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+.modal-fullscreen-close { background: #ef4444; color: white; border: none; width: 28px; height: 28px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+.filter-bar { display: grid; grid-template-columns: 100px 100px 150px 150px 1fr; gap: 10px; background: #f1f5f9; padding: 12px 24px; border-bottom: 1px solid #e2e8f0; }
+.filter-bar input { padding: 6px 10px; font-size: 12px; background: #fff; border: 1.5px solid var(--border-color); border-radius: 6px; outline: none; font-weight: 700; }
+
+.table-container-modal { flex: 1; overflow-y: auto; overflow-x: auto; padding: 20px; background: #f8fafc; }
+table { width: 100%; min-width: 1200px; border-collapse: collapse; font-size: 12px; text-align: left; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+th { background: #f1f5f9; color: #1e293b; font-weight: 800; padding: 12px 10px; position: sticky; top: 0; border-bottom: 2px solid #cbd5e1; text-transform: uppercase; font-size: 10px; }
+td { padding: 10px; border-bottom: 1px solid #f1f5f9; color: #334155; font-weight: 700; vertical-align: middle; }
+tbody tr:hover { background-color: #f8fafc; }
+tbody tr.linha-selecionada { background-color: #fef3c7 !important; }
+
+.badge-frota { background: #e0e7ff; color: #3730a3; padding: 3px 6px; border-radius: 4px; font-weight: 800; }
+.badge-apoio { background: #fee2e2; color: #991b1b; padding: 3px 6px; border-radius: 4px; font-weight: 800; }
+.badge-media { background: #ecfdf5; color: #065f46; padding: 3px 6px; border-radius: 4px; font-weight: 800; }
+.badge-media-alerta { background: #fffbeb; color: #92400e; padding: 3px 6px; border-radius: 4px; font-weight: 800; }
+
+/* POP-UP MENU CONTEXTUAL */
+.popup-acoes-menu { position: fixed; display: none; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.12); padding: 6px; z-index: 9999; min-width: 150px; }
+.popup-acoes-item { display: flex; align-items: center; gap: 6px; width: 100%; padding: 8px 10px; font-size: 12px; font-weight: 700; text-align: left; color: #334155; background: none; border: none; border-radius: 4px; cursor: pointer; }
+.popup-acoes-item:hover { background-color: #f1f5f9; }
+
+/* --- MODAL DA CENTRAL DE DASHBOARD (ANALYTICS) --- */
+.analytics-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 500; display: none; justify-content: center; align-items: center; padding: 20px; }
+.analytics-content { background: #ffffff; border-radius: 16px; width: 1150px; max-width: 95vw; height: 88vh; display: flex; flex-direction: column; border-top: 6px solid #10b981; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; }
+.analytics-header { padding: 15px 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+.analytics-close { background: #ef4444; color: white; border: none; width: 28px; height: 28px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.analytics-toolbar { padding: 10px 24px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; display: flex; gap: 8px; align-items: center; }
+.btn-time-filter { background: white; border: 1.5px solid #cbd5e1; padding: 6px 14px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+.btn-time-filter.active { background: #10b981; color: white; border-color: #10b981; }
+.analytics-body { flex: 1; padding: 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; background: #f8fafc; }
+.analytics-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.analytics-card h4 { font-size: 11px; text-transform: uppercase; color: #475569; margin-bottom: 10px; border-bottom: 2px solid #f1f5f9; padding-bottom: 4px; }
+.chart-row { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+.chart-label-container { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: #1e293b; }
+.chart-bar-bg { width: 100%; height: 12px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
+.chart-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #10b981); width: 0%; transition: width 0.5s ease; }
+.chart-bar-fill.orange { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.chart-bar-fill.purple { background: linear-gradient(90deg, #8b5cf6, #d946ef); }
+.pagination-container { display: flex; justify-content: center; gap: 5px; padding: 10px; }
+.btn-page { background: white; border: 1px solid #cbd5e1; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btn-page.active { background: var(--movistar-blue); color: white; border-color: var(--movistar-blue); }
